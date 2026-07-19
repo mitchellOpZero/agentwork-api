@@ -11,32 +11,39 @@ No account, API key, subscription, or KYC is required.
 
 ## Live API
 
-- Base URL: `https://agentwork-api-production.up.railway.app`
-- Free manifest: `https://agentwork-api-production.up.railway.app/v1/manifest`
-- Free examples: `https://agentwork-api-production.up.railway.app/v1/sample`
-- Qualified sources: `https://agentwork-api-production.up.railway.app/v1/sources`
-- OpenAPI: `https://agentwork-api-production.up.railway.app/openapi.json`
-- Agent card: `https://agentwork-api-production.up.railway.app/.well-known/agent.json`
-- Agent instructions: `https://agentwork-api-production.up.railway.app/llms.txt`
+- Base URL: `https://agent-work-api.agentwork-market.workers.dev`
+- Free manifest: `https://agent-work-api.agentwork-market.workers.dev/v1/manifest`
+- Free examples: `https://agent-work-api.agentwork-market.workers.dev/v1/sample`
+- Qualified sources: `https://agent-work-api.agentwork-market.workers.dev/v1/sources`
+- OpenAPI: `https://agent-work-api.agentwork-market.workers.dev/openapi.json`
+- Agent card: `https://agent-work-api.agentwork-market.workers.dev/.well-known/agent.json`
+- Agent instructions: `https://agent-work-api.agentwork-market.workers.dev/llms.txt`
 
 Check the manifest before buying data:
 
 ```sh
 curl --silent --show-error \
-  'https://agentwork-api-production.up.railway.app/v1/manifest'
+  'https://agent-work-api.agentwork-market.workers.dev/v1/manifest'
 ```
 
 Request a filtered feed. The first response is an x402 payment challenge:
 
 ```sh
 curl --silent --show-error --include \
-  'https://agentwork-api-production.up.railway.app/v1/feed?q=python&currency=USDC&limit=25&offset=0'
+  'https://agent-work-api.agentwork-market.workers.dev/v1/feed?q=python&currency=USDC&limit=25&offset=0'
 ```
 
 Send the resulting x402 v2 payment envelope in `PAYMENT-SIGNATURE` against the
 same canonical URL. A settled request returns the data with `PAYMENT-RESPONSE`.
 Repeat the same proof and request to recover the committed response without a
 second settlement.
+
+The live deployment has passed health, readiness, manifest, semantic 304,
+sample, x402 challenge, and analytics checks. The payment state machine also
+passed 20 local workerd tests, including concurrent same-proof requests and
+ambiguous settlement holds. A self-funded Polygon mainnet settlement hasn't run
+because the operator wallet remains unfunded; no test payment is counted as
+revenue.
 
 ## Current feed
 
