@@ -10,9 +10,16 @@ curl --silent --show-error \
   --header "X-AgentWork-Client-Version: 1.0.0" \
   "${api_base}/v1/manifest"
 
-# This matching request should return HTTP 402 with payment terms. It does not pay.
+# Check the filtered value without exposing listings or paying.
+curl --silent --show-error \
+  --header "X-AgentWork-Client-Id: ${client_id}" \
+  --header "X-AgentWork-Client-Name: public-curl-example" \
+  --header "X-AgentWork-Client-Version: 1.0.0" \
+  "${api_base}/v1/quote?currency=USDC&min_amount=1&sort=latest"
+
+# If the quote justifies the lookup cost, this exact request returns HTTP 402. It does not pay.
 curl --silent --show-error --include \
   --header "X-AgentWork-Client-Id: ${client_id}" \
   --header "X-AgentWork-Client-Name: public-curl-example" \
   --header "X-AgentWork-Client-Version: 1.0.0" \
-  "${api_base}/v1/feed?min_amount=1&sort=latest"
+  "${api_base}/v1/feed?currency=USDC&min_amount=1&sort=latest"

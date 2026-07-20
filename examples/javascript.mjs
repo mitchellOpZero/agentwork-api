@@ -10,7 +10,12 @@ const headers = {
 const manifest = await fetch(`${base}/v1/manifest`, { headers });
 console.log("manifest", manifest.status, await manifest.json());
 
-const challenge = await fetch(`${base}/v1/feed?min_amount=1&sort=latest`, { headers });
+const quote = await fetch(`${base}/v1/quote?currency=USDC&min_amount=1&sort=latest`, { headers });
+const quoteBody = await quote.json();
+console.log("quote", quote.status, quoteBody.match_count, quoteBody.payouts);
+
+// Continue only if the quote justifies the lookup cost.
+const challenge = await fetch(quoteBody.paid_feed.url, { headers });
 console.log("paid challenge", challenge.status);
 console.log("PAYMENT-REQUIRED", challenge.headers.get("PAYMENT-REQUIRED"));
 

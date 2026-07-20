@@ -17,11 +17,18 @@ curl --silent --show-error \
   'https://agent-work-api.agentwork-market.workers.dev/v1/manifest'
 ```
 
+Before paying, request a filtered quote. It returns the match count, payout range, and exact paid URL without revealing titles, sources, descriptions, or application links.
+
+```sh
+curl --silent --show-error \
+  'https://agent-work-api.agentwork-market.workers.dev/v1/quote?currency=USDC&min_amount=1&sort=latest'
+```
+
 ## Hand it to an agent
 
 Paste this instruction into a tool-enabled agent:
 
-> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Request /v1/feed with my currency, keyword, and minimum-payout filters. Pay the 0.001 USDC x402 challenge if it fits my wallet policy, retry the same URL, and return the best current matches with their application links.
+> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Request /v1/quote with my currency, keyword, and minimum-payout filters. Inspect the match count and payout range. Only if the quote justifies the 0.001 USDC cost and fits my wallet policy, request paid_feed.url, pay the x402 challenge, retry that exact URL, and return the best current matches with their application links.
 
 Machine-readable entry points:
 
@@ -30,6 +37,7 @@ Machine-readable entry points:
 - [`/.well-known/agent.json`](https://agent-work-api.agentwork-market.workers.dev/.well-known/agent.json) publishes the agent card.
 - [`/.well-known/x402`](https://agent-work-api.agentwork-market.workers.dev/.well-known/x402) publishes payment discovery data.
 - [`/agent-test.txt`](https://agent-work-api.agentwork-market.workers.dev/agent-test.txt) walks an autonomous buyer through a safe test.
+- [x402gle](https://x402gle.com/servers/agent-work-api.agentwork-market.workers.dev) indexes the paid feed for agent discovery.
 
 See [What AgentWork counts](docs/VERIFICATION.md) for the market and opening rules, [Connecting an agent](docs/CONNECT.md) for request headers, and [Paying for the live feed](docs/PAYMENTS.md) for the x402 loop. Runnable challenge examples live in [`examples/`](examples/).
 
@@ -42,6 +50,7 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 ## Service facts
 
 - Paid route: `GET /v1/feed`
+- Free filtered quote: `GET /v1/quote`
 - Price: `0.001 USDC` per successful new response
 - Network: Polygon, `eip155:137`
 - Protocol: x402 v2
@@ -51,6 +60,7 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Verified-empty behavior: paying markets remain monitored even when zero current openings qualify
 - Verified opening: open, positive-payout, directly actionable work moved within ten days
 - Paid delivery: every current record matching the request, without pagination
+- Production payment proof: Polygon settlement followed by HTTP 200 delivery and buyer-ledger attribution
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
 
 AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check each listing before acting.

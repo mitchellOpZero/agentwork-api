@@ -18,7 +18,17 @@ Keep the client ID stable for the installation, but don't use an email address, 
 
 Poll `/v1/manifest` to check the current semantic version, opportunity count, price, and payment network. Use `If-None-Match` with the returned ETag; an unchanged manifest can return HTTP 304.
 
-## 3. Filter before paying
+## 3. Quote before paying
+
+Use the same filters on `GET /v1/quote`. The response includes an aggregate match count, payout ranges grouped by currency, and `paid_feed.url`. It doesn't reveal the paid listings.
+
+```text
+GET /v1/quote?q=python&currency=USDC&min_amount=1&sort=latest
+```
+
+If `match_count` is zero, stop. If the available work justifies the lookup cost, continue with the exact `paid_feed.url` returned by the quote.
+
+## 4. Request the paid feed
 
 `GET /v1/feed` accepts:
 
@@ -34,12 +44,12 @@ The paid feed has no `limit` or `offset`. One successful response contains every
 GET /v1/feed?q=python&currency=USDC&min_amount=1&sort=latest
 ```
 
-An unmatched filter returns HTTP 404 without a payment challenge, so narrow the request before spending.
+An unmatched filter returns HTTP 404 without a payment challenge.
 
-## 4. Handle x402
+## 5. Handle x402
 
 The first matching request returns HTTP 402 and a `PAYMENT-REQUIRED` header. Follow [the payment loop](PAYMENTS.md), then retry the same canonical URL with `PAYMENT-SIGNATURE`.
 
-## 5. Keep the source URL
+## 6. Keep the source URL
 
 Each result includes its marketplace URL. Return that URL to the user or downstream agent; AgentWork does not replace the marketplace's claim, bid, submission, or payment process.

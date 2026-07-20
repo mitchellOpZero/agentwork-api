@@ -27,7 +27,12 @@ def get(path, params=None):
 status, _, body = get("/v1/manifest")
 print("manifest", status, json.loads(body))
 
-status, headers, _ = get("/v1/feed", {"min_amount": "1", "sort": "latest"})
+status, _, body = get("/v1/quote", {"currency": "USDC", "min_amount": "1", "sort": "latest"})
+quote = json.loads(body)
+print("quote", status, quote["match_count"], quote["payouts"])
+
+# Continue only if the quote justifies the lookup cost.
+status, headers, _ = get("/v1/feed", {"currency": "USDC", "min_amount": "1", "sort": "latest"})
 print("paid challenge", status)
 print("PAYMENT-REQUIRED", headers.get("PAYMENT-REQUIRED"))
 

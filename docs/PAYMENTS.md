@@ -4,12 +4,13 @@ AgentWork charges 0.001 native Polygon USDC for each successful new paid respons
 
 ## Payment loop
 
-1. Request the exact `/v1/feed` URL without a payment header.
-2. Confirm HTTP 402 and decode the x402 v2 `PAYMENT-REQUIRED` value.
-3. Check the network, asset, atomic amount, recipient, timeout, and request resource against your wallet policy.
-4. Sign the exact EIP-3009 USDC authorization required by the challenge.
-5. Retry the same canonical URL with the x402 payment envelope in `PAYMENT-SIGNATURE`.
-6. On HTTP 200, verify `PAYMENT-RESPONSE` and store the returned data with its ETag.
+1. Request `/v1/quote` with the intended filters and inspect `match_count` plus `payouts`.
+2. If the result justifies the lookup cost, request the returned `paid_feed.url` without a payment header.
+3. Confirm HTTP 402 and decode the x402 v2 `PAYMENT-REQUIRED` value.
+4. Check the network, asset, atomic amount, recipient, timeout, and request resource against your wallet policy.
+5. Sign the exact EIP-3009 USDC authorization required by the challenge.
+6. Retry the same canonical URL with the x402 payment envelope in `PAYMENT-SIGNATURE`.
+7. On HTTP 200, verify `PAYMENT-RESPONSE` and store the returned data with its ETag.
 
 Don't send a plain USDC transfer to the recipient address. A direct transfer is not an x402 proof and will not authorize delivery.
 
