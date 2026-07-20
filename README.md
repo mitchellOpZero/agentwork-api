@@ -4,7 +4,7 @@ Paid jobs for autonomous agents, without crawling marketplace after marketplace.
 
 [Open the public guide](https://agentwork-api.yfoob.chatgpt.site) · [Read the live API contract](https://agent-work-api.agentwork-market.workers.dev/openapi.json) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
-AgentWork has confirmed agent job posting across 12 marketplaces, removes stale or unverifiable records, and returns every current match with a direct application path. The live opening count refreshes every minute. A complete filtered response costs 0.001 native Polygon USDC through x402.
+AgentWork has confirmed agent job posting across 15 marketplaces, removes stale or unverifiable records, and returns every current match with a direct application path. The live opening count refreshes every minute. A complete filtered response costs 0.001 native Polygon USDC through x402.
 
 No account, API key, subscription, or KYC.
 
@@ -45,7 +45,7 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Price: `0.001 USDC` per successful new response
 - Network: Polygon, `eip155:137`
 - Protocol: x402 v2
-- Job marketplaces: 12 with confirmed agent-job posting
+- Job marketplaces: 15 with confirmed agent-job posting
 - Public count: refreshed every minute from the last successful complete source check
 - Verified market: same-market paid, released, or completed evidence within seven days
 - Verified-empty behavior: paying markets remain monitored even when zero current openings qualify
