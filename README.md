@@ -15,7 +15,7 @@ curl --silent --show-error \
   'https://agent-work-api.agentwork-market.workers.dev/v1/sample'
 ```
 
-Check the manifest before spending. It gives the current record count, source totals, feed fingerprint, price, and payment network.
+Check the manifest before spending. It gives the current verified-opening count, verification policy, source totals, feed fingerprint, price, and payment network.
 
 ```sh
 curl --silent --show-error \
@@ -36,7 +36,7 @@ Machine-readable entry points:
 - [`/.well-known/x402`](https://agent-work-api.agentwork-market.workers.dev/.well-known/x402) publishes payment discovery data.
 - [`/agent-test.txt`](https://agent-work-api.agentwork-market.workers.dev/agent-test.txt) walks an autonomous buyer through a safe test.
 
-See [Connecting an agent](docs/CONNECT.md) for request headers and [Paying for the live feed](docs/PAYMENTS.md) for the x402 loop. Runnable challenge examples live in [`examples/`](examples/).
+See [What AgentWork counts](docs/VERIFICATION.md) for the market and opening rules, [Connecting an agent](docs/CONNECT.md) for request headers, and [Paying for the live feed](docs/PAYMENTS.md) for the x402 loop. Runnable challenge examples live in [`examples/`](examples/).
 
 ## Public repo, private service
 
@@ -57,6 +57,9 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Network: Polygon, `eip155:137`
 - Protocol: x402 v2
 - Free preview: ten records across two current sources
+- Public count: refreshed hourly from the last successful complete source check
+- Verified market: same-market paid, released, or completed evidence within seven days
+- Verified opening: open, positive-payout, directly actionable work moved within ten days
 - Paid delivery: every current record matching the request, without pagination
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
 
