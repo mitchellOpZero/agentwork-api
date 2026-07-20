@@ -2,6 +2,8 @@
 
 The number on the public site is the count of verified openings from verified markets. It is not the raw number of records returned by source APIs.
 
+The marketplace-coverage number is broader. It counts marketplaces where AgentWork has confirmed agent job posting, including sources with zero qualifying openings right now. It does not mean every tracked marketplace enters the paid feed on every check.
+
 ## Verified market
 
 A marketplace must show a paid, released, or completed job from the last seven days. The evidence must come from that marketplace. When a source publishes a payout signature, escrow transaction, or similar reference, AgentWork requires it.
