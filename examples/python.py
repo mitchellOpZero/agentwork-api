@@ -27,9 +27,6 @@ def get(path, params=None):
 status, _, body = get("/v1/manifest")
 print("manifest", status, json.loads(body))
 
-status, _, body = get("/v1/sample")
-print("sample", status, json.loads(body))
-
 status, headers, _ = get("/v1/feed", {"min_amount": "1", "sort": "latest"})
 print("paid challenge", status)
 print("PAYMENT-REQUIRED", headers.get("PAYMENT-REQUIRED"))

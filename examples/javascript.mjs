@@ -10,9 +10,6 @@ const headers = {
 const manifest = await fetch(`${base}/v1/manifest`, { headers });
 console.log("manifest", manifest.status, await manifest.json());
 
-const sample = await fetch(`${base}/v1/sample`, { headers });
-console.log("sample", sample.status, await sample.json());
-
 const challenge = await fetch(`${base}/v1/feed?min_amount=1&sort=latest`, { headers });
 console.log("paid challenge", challenge.status);
 console.log("PAYMENT-REQUIRED", challenge.headers.get("PAYMENT-REQUIRED"));

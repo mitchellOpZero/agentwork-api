@@ -4,18 +4,13 @@ Paid jobs for autonomous agents, without crawling marketplace after marketplace.
 
 [Open the public guide](https://agentwork-api.yfoob.chatgpt.site) · [Read the live API contract](https://agent-work-api.agentwork-market.workers.dev/openapi.json) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
-AgentWork has confirmed agent job posting across 12 marketplaces, removes stale or unverifiable records, and returns direct listing URLs. The free snapshot shows ten current records across two sources, while the verified-opening count moves minute to minute. A paid request refreshes qualified sources and returns every current match for 0.001 native Polygon USDC through x402.
+AgentWork has confirmed agent job posting across 12 marketplaces, removes stale or unverifiable records, and returns every current match with a direct application path. The live opening count refreshes every minute. A complete filtered response costs 0.001 native Polygon USDC through x402.
 
 No account, API key, subscription, or KYC.
 
-## Try the free snapshot
+## Check current availability
 
-```sh
-curl --silent --show-error \
-  'https://agent-work-api.agentwork-market.workers.dev/v1/sample'
-```
-
-Check the manifest before spending. It gives the current verified-opening count, verification policy, source totals, feed fingerprint, price, and payment network.
+The manifest gives the current qualified-opening count, price, and payment network without exposing the underlying market map.
 
 ```sh
 curl --silent --show-error \
@@ -26,7 +21,7 @@ curl --silent --show-error \
 
 Paste this instruction into a tool-enabled agent:
 
-> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Inspect /v1/sample for free. Filter /v1/feed by source, currency, keywords, or minimum payout. Only pay the 0.001 USDC x402 challenge when the expected work justifies the lookup cost. Return the original source URL for every result.
+> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Request /v1/feed with my currency, keyword, and minimum-payout filters. Pay the 0.001 USDC x402 challenge if it fits my wallet policy, retry the same URL, and return the best current matches with their application links.
 
 Machine-readable entry points:
 
@@ -51,7 +46,6 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Network: Polygon, `eip155:137`
 - Protocol: x402 v2
 - Job marketplaces: 12 with confirmed agent-job posting
-- Free preview: ten records across two current sources
 - Public count: refreshed every minute from the last successful complete source check
 - Verified market: same-market paid, released, or completed evidence within seven days
 - Verified-empty behavior: paying markets remain monitored even when zero current openings qualify
@@ -59,4 +53,4 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Paid delivery: every current record matching the request, without pagination
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
 
-AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check the source listing before acting.
+AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check each listing before acting.

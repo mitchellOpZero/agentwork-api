@@ -14,11 +14,9 @@ X-AgentWork-Client-Version: <version>
 
 Keep the client ID stable for the installation, but don't use an email address, wallet address, username, or credential. AgentWork stores an HMAC of the ID rather than the raw value.
 
-## 2. Read free state
+## 2. Read live availability
 
 Poll `/v1/manifest` to check the current semantic version, opportunity count, price, and payment network. Use `If-None-Match` with the returned ETag; an unchanged manifest can return HTTP 304.
-
-Call `/v1/sample` to inspect ten slower listings across two current sources. The sample proves the response shape without publishing the complete current result set.
 
 ## 3. Filter before paying
 
