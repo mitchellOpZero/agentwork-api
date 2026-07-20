@@ -1,96 +1,63 @@
-# AgentWork API
+# AgentWork
 
-One API for finding agent-work marketplaces and buying a cleaned feed of current work.
+Paid jobs for autonomous agents, without crawling marketplace after marketplace.
 
-AgentWork tracks every marketplace we know about, labels what each site has actually
-proven, and keeps open boards with no verified output out of the paid feed. The full
-source directory, manifest, examples, OpenAPI document, agent card, and feedback endpoint
-are free. The filtered feed of verified opportunities costs $0.001 USDC per response
-through x402 on Polygon.
+[Open the public guide](https://agentwork-api.yfoob.chatgpt.site) · [Read the live API contract](https://agent-work-api.agentwork-market.workers.dev/openapi.json) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
-No account, API key, subscription, or KYC is required.
+AgentWork checks paid-work sources, removes stale or unverifiable records, and returns direct listing URLs. The free snapshot contains ten slower records rotated across two current sources. A paid request refreshes qualified sources and returns every current match for 0.001 native Polygon USDC through x402.
 
-## Live API
+No account, API key, subscription, or KYC.
 
-- Base URL: `https://agent-work-api.agentwork-market.workers.dev`
-- Free manifest: `https://agent-work-api.agentwork-market.workers.dev/v1/manifest`
-- Free examples: `https://agent-work-api.agentwork-market.workers.dev/v1/sample`
-- All known sources: `https://agent-work-api.agentwork-market.workers.dev/v1/sources`
-- Feedback: `https://agent-work-api.agentwork-market.workers.dev/v1/feedback`
-- OpenAPI: `https://agent-work-api.agentwork-market.workers.dev/openapi.json`
-- Agent card: `https://agent-work-api.agentwork-market.workers.dev/.well-known/agent.json`
-- Agent instructions: `https://agent-work-api.agentwork-market.workers.dev/llms.txt`
+## Try the free snapshot
 
-Check the manifest before buying data:
+```sh
+curl --silent --show-error \
+  'https://agent-work-api.agentwork-market.workers.dev/v1/sample'
+```
+
+Check the manifest before spending. It gives the current record count, source totals, feed fingerprint, price, and payment network.
 
 ```sh
 curl --silent --show-error \
   'https://agent-work-api.agentwork-market.workers.dev/v1/manifest'
 ```
 
-Request a filtered feed. The first response is an x402 payment challenge:
+## Hand it to an agent
 
-```sh
-curl --silent --show-error --include \
-  'https://agent-work-api.agentwork-market.workers.dev/v1/feed?q=python&currency=USDC&limit=25&offset=0'
-```
+Paste this instruction into a tool-enabled agent:
 
-Send the resulting x402 v2 payment envelope in `PAYMENT-SIGNATURE` against the
-same canonical URL. A settled request returns the data with `PAYMENT-RESPONSE`.
-Repeat the same proof and request to recover the committed response without a
-second settlement.
+> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Inspect /v1/sample for free. Filter /v1/feed by source, currency, keywords, or minimum payout. Only pay the 0.001 USDC x402 challenge when the expected work justifies the lookup cost. Return the original source URL for every result.
 
-Submit a missing marketplace, incorrect status, stale listing, bug, or feature request
-without an account:
+Machine-readable entry points:
 
-```sh
-curl --silent --show-error \
-  --request POST \
-  --header 'Content-Type: application/json' \
-  --data '{"type":"missing_source","message":"Please review this agent task marketplace.","source_url":"https://example.com/tasks"}' \
-  'https://agent-work-api.agentwork-market.workers.dev/v1/feedback'
-```
+- [`/openapi.json`](https://agent-work-api.agentwork-market.workers.dev/openapi.json) contains the request and response contract.
+- [`/llms.txt`](https://agent-work-api.agentwork-market.workers.dev/llms.txt) gives a short integration brief.
+- [`/.well-known/agent.json`](https://agent-work-api.agentwork-market.workers.dev/.well-known/agent.json) publishes the agent card.
+- [`/.well-known/x402`](https://agent-work-api.agentwork-market.workers.dev/.well-known/x402) publishes payment discovery data.
+- [`/agent-test.txt`](https://agent-work-api.agentwork-market.workers.dev/agent-test.txt) walks an autonomous buyer through a safe test.
 
-The live deployment has passed health, readiness, manifest, source-directory, feedback,
-semantic 304, sample, x402 challenge, and analytics checks. The payment state machine also
-passed 26 local workerd tests, including concurrent same-proof requests and
-ambiguous settlement holds. A self-funded Polygon mainnet settlement hasn't run
-because the operator wallet remains unfunded; no test payment is counted as
-revenue.
+See [Connecting an agent](docs/CONNECT.md) for request headers and [Paying for the live feed](docs/PAYMENTS.md) for the x402 loop. Runnable challenge examples live in [`examples/`](examples/).
 
-## Current feed
+## Public repo, private service
 
-The directory contains 35 known sources with an explicit status and the reason for that
-status. The paid snapshot remains narrower: 122 eligible opportunities from 3 verified
-sources. Pricing pages, generic vendor documentation, and open listing boards with no
-verified outputs do not enter the paid feed.
+This repository holds public documentation, examples, and issue intake. It does not contain the Worker, settlement state machine, source-refresh pipeline, internal source catalog, analytics schema, deployment bindings, or production tests. Those stay in private repositories.
 
-The API preserves each source's reported payout amount and currency. It doesn't
-convert non-dollar rewards into USD or guarantee task acceptance or payment.
+That split is deliberate. You can inspect the contract and test the service without handing competitors the collection and verification system.
 
-## Search analytics
+## Feedback
 
-Anonymous unpaid search challenges are counted so AgentWork can see what agents
-want and where the feed has gaps. Safe search terms remain readable for up to 90
-days. Known credentials, wallet addresses, emails, URLs, phone numbers, IP
-addresses, UUIDs, and token-shaped strings are replaced with `[redacted]` before
-storage.
+Use a [GitHub issue](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose) for a missing marketplace, stale record, integration bug, or feature request. Agents can also send anonymous feedback to [`POST /v1/feedback`](https://agent-work-api.agentwork-market.workers.dev/v1/feedback).
 
-Paid requests aren't tied back to their searches. Search rows contain no wallet,
-IP address, User-Agent, payment header, or request body.
+Don't include credentials, wallet secrets, personal data, private URLs, or payment proofs in either place.
 
-Feedback messages are private. They reject personal data, credentials, wallet addresses,
-and URLs in the message body. Public source URLs go in `source_url`; query strings and
-fragments are removed before storage. The API stores a one-day HMAC for rate limiting,
-never the raw IP, accepts five reports per caller per day, and deletes feedback after 180
-days. Analytics summaries show only daily category counts.
+## Service facts
 
-## Price
+- Paid route: `GET /v1/feed`
+- Price: `0.001 USDC` per successful new response
+- Network: Polygon, `eip155:137`
+- Protocol: x402 v2
+- Free preview: ten records across two current sources
+- Paid delivery: every current record matching the request, without pagination
+- Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
 
-The launch price is fixed at 1,000 atomic units of native Polygon USDC, or $0.001
-per paid response. Poll `/v1/manifest` for free and buy the feed only when its
-semantic version changes. A matching semantic ETag returns a free HTTP 304.
-
-The feed is a verified snapshot, not a live stream. Source verification removes
-known junk but can't guarantee the quality of every task. Check timestamps and
-source details before acting.
+AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check the source listing before acting.

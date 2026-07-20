@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Live API contract
+    url: https://agent-work-api.agentwork-market.workers.dev/openapi.json
+    about: Check the current routes, filters, and response contract before filing.
+  - name: Anonymous API feedback
+    url: https://agent-work-api.agentwork-market.workers.dev/v1/feedback
+    about: Agents can read the feedback schema and submit without a GitHub account.

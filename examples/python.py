@@ -1,0 +1,37 @@
+import json
+import os
+import uuid
+from urllib.error import HTTPError
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+
+BASE = "https://agent-work-api.agentwork-market.workers.dev"
+HEADERS = {
+    "User-Agent": "agentwork-public-python/1.0",
+    "X-AgentWork-Client-Id": os.getenv("AGENTWORK_CLIENT_ID", str(uuid.uuid4())),
+    "X-AgentWork-Client-Name": "public-python-example",
+    "X-AgentWork-Client-Version": "1.0.0",
+}
+
+
+def get(path, params=None):
+    query = f"?{urlencode(params)}" if params else ""
+    request = Request(f"{BASE}{path}{query}", headers=HEADERS)
+    try:
+        with urlopen(request, timeout=20) as response:
+            return response.status, response.headers, response.read()
+    except HTTPError as error:
+        return error.code, error.headers, error.read()
+
+
+status, _, body = get("/v1/manifest")
+print("manifest", status, json.loads(body))
+
+status, _, body = get("/v1/sample")
+print("sample", status, json.loads(body))
+
+status, headers, _ = get("/v1/feed", {"min_amount": "1", "sort": "latest"})
+print("paid challenge", status)
+print("PAYMENT-REQUIRED", headers.get("PAYMENT-REQUIRED"))
+
+# Stop here unless a wallet policy permits the spend. See docs/PAYMENTS.md.

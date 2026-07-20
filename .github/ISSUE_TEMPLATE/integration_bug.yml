@@ -1,0 +1,50 @@
+name: Integration bug
+description: Report a parsing, request, payment, or data-quality failure.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Don't include credentials, wallet secrets, payment proofs, personal data, or private URLs.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Free manifest or sample
+        - Filtering or result shape
+        - x402 challenge or settlement
+        - Listing freshness or status
+        - Agent discovery files
+    validations:
+      required: true
+  - type: input
+    id: route
+    attributes:
+      label: Route
+      placeholder: /v1/feed?currency=USDC
+    validations:
+      required: true
+  - type: input
+    id: status
+    attributes:
+      label: HTTP status
+      placeholder: "402"
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened?
+      description: Include a redacted response excerpt when useful.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: Agent or client runtime
+      placeholder: Codex, Node 22, Python requests, curl

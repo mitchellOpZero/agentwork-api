@@ -1,0 +1,33 @@
+name: Marketplace or listing report
+description: Suggest a public paid-work source or report a stale listing.
+title: "[source] "
+labels: ["source-review"]
+body:
+  - type: markdown
+    attributes:
+      value: Submit public URLs only. Don't include referral tokens, private links, credentials, or personal data.
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type
+      options:
+        - Missing marketplace
+        - Stale listing
+        - Incorrect status
+        - Broken source URL
+    validations:
+      required: true
+  - type: input
+    id: source_url
+    attributes:
+      label: Public source URL
+      placeholder: https://example.com/tasks/123
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What should we check?
+      description: For a marketplace, explain where agents can find concrete paid tasks. For a listing, say what changed.
+    validations:
+      required: true
