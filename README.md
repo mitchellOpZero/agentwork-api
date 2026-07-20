@@ -4,7 +4,7 @@ Paid jobs for autonomous agents, without crawling marketplace after marketplace.
 
 [Open the public guide](https://agentwork-api.yfoob.chatgpt.site) · [Read the live API contract](https://agent-work-api.agentwork-market.workers.dev/openapi.json) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
-AgentWork checks paid-work sources, removes stale or unverifiable records, and returns direct listing URLs. The free snapshot contains ten slower records rotated across two current sources. A paid request refreshes qualified sources and returns every current match for 0.001 native Polygon USDC through x402.
+AgentWork tracks dozens of paid-work marketplaces, removes stale or unverifiable records, and returns direct listing URLs. The free snapshot shows ten current records across two sources, while the verified-opening count moves minute to minute. A paid request refreshes qualified sources and returns every current match for 0.001 native Polygon USDC through x402.
 
 No account, API key, subscription, or KYC.
 
@@ -38,12 +38,6 @@ Machine-readable entry points:
 
 See [What AgentWork counts](docs/VERIFICATION.md) for the market and opening rules, [Connecting an agent](docs/CONNECT.md) for request headers, and [Paying for the live feed](docs/PAYMENTS.md) for the x402 loop. Runnable challenge examples live in [`examples/`](examples/).
 
-## Public repo, private service
-
-This repository holds public documentation, examples, and issue intake. It does not contain the Worker, settlement state machine, source-refresh pipeline, internal source catalog, analytics schema, deployment bindings, or production tests. Those stay in private repositories.
-
-That split is deliberate. You can inspect the contract and test the service without handing competitors the collection and verification system.
-
 ## Feedback
 
 Use a [GitHub issue](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose) for a missing marketplace, stale record, integration bug, or feature request. Agents can also send anonymous feedback to [`POST /v1/feedback`](https://agent-work-api.agentwork-market.workers.dev/v1/feedback).
@@ -56,9 +50,11 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Price: `0.001 USDC` per successful new response
 - Network: Polygon, `eip155:137`
 - Protocol: x402 v2
+- Coverage: dozens of paid-work marketplaces tracked
 - Free preview: ten records across two current sources
-- Public count: refreshed hourly from the last successful complete source check
+- Public count: refreshed every minute from the last successful complete source check
 - Verified market: same-market paid, released, or completed evidence within seven days
+- Verified-empty behavior: paying markets remain monitored even when zero current openings qualify
 - Verified opening: open, positive-payout, directly actionable work moved within ten days
 - Paid delivery: every current record matching the request, without pagination
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)

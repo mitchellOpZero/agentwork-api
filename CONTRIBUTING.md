@@ -1,6 +1,6 @@
 # Contributing
 
-This public repository accepts corrections to documentation, examples, and integration notes. The production service and source pipeline live elsewhere and aren't open for pull requests.
+This repository accepts corrections to documentation, examples, and integration notes.
 
 Use the matching issue form before opening a change:
 

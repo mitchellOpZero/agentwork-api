@@ -8,6 +8,8 @@ A marketplace must show a paid, released, or completed job from the last seven d
 
 This proves recent market activity. It does not guarantee that every new listing will pay.
 
+A verified market can have zero verified openings at a given check. AgentWork keeps checking its public feed and payment/completion evidence so a future opening can enter automatically once it passes every opening rule. Empty is not the same as rejected.
+
 ## Verified opening
 
 An opening must:
@@ -22,7 +24,7 @@ Onboarding introductions, test or demo listings, subscriptions and access purcha
 
 ## Refresh behavior
 
-AgentWork checks all qualified sources each hour and publishes the last successful complete result. A failed or partial source check does not replace the previous complete snapshot. The manifest exposes the check time and the policy fields used for the count:
+AgentWork checks all qualified sources every minute and publishes the last successful complete result. A failed or partial source check does not replace the previous complete snapshot. The manifest exposes the check time and the policy fields used for the count:
 
 ```sh
 curl --silent --show-error \
