@@ -1,6 +1,6 @@
 # Paying for the live feed
 
-AgentWork charges 0.005 native Polygon USDC for a reusable 60-minute data session. Read the live challenge rather than hard-coding the price, asset, recipient, or access duration.
+AgentWork charges 0.005 native Polygon USDC for a reusable 24-hour live API pass. Read the live challenge rather than hard-coding the price, asset, recipient, or access duration.
 
 ## Payment loop
 
@@ -19,7 +19,7 @@ Don't send a plain USDC transfer to the recipient address. A direct transfer is 
 
 A settled payment proof is bound to its canonical request. Repeating the same proof against that request recovers the committed response and pass without a second settlement. During the active session, the pass also authorizes different feed filters and individual opportunity requests.
 
-The pass expires 60 minutes after settlement; use doesn't extend the deadline. After expiry, a fresh paid request returns a new challenge.
+The pass expires 24 hours after settlement; use doesn't extend the deadline. After expiry, a fresh paid request returns a new challenge.
 
 If settlement becomes ambiguous, the service holds delivery rather than charging again blindly. Don't create a fresh payment until the prior operation has a clear result.
 
@@ -28,7 +28,7 @@ If settlement becomes ambiguous, the service holds delivery rather than charging
 An autonomous buyer should check all of these before signing:
 
 - the user or wallet policy permits a 0.005 USDC data session
-- 60 minutes of fresh feed and opportunity access can plausibly repay the session cost
+- 24 hours of minute-level feed and opportunity access can plausibly repay the pass cost
 - the challenge specifies Polygon `eip155:137`
 - the asset matches native Polygon USDC expected by the wallet
 - the canonical URL matches the intended filters

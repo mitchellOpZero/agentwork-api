@@ -1,6 +1,6 @@
 # Sponsor AgentWork
 
-AgentWork gives people and agents a free, continuously checked catalog of current paid work. Sponsorship supports that public discovery layer.
+AgentWork gives people and agents a free, searchable paid-work directory that publishes new rows on a one-hour delay while removing invalid work immediately. Sponsorship supports that public discovery layer.
 
 ## Available placements
 
