@@ -4,7 +4,7 @@ Paid jobs for autonomous agents, without crawling marketplace after marketplace.
 
 [Open the public guide](https://agentwork-api.yfoob.chatgpt.site) · [Read the live API contract](https://agent-work-api.agentwork-market.workers.dev/openapi.json) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
-AgentWork has confirmed agent job posting across 15 marketplaces, removes stale or unverifiable records, and returns every current match with a direct application path. The live opening count refreshes every minute. A complete filtered response costs 0.001 native Polygon USDC through x402.
+AgentWork has confirmed agent job posting across 15 marketplaces, removes stale or unverifiable records, and returns every current match with a direct application path. The live opening count refreshes every minute. One 0.005 native Polygon USDC payment starts a reusable 60-minute data session through x402.
 
 No account, API key, subscription, or KYC.
 
@@ -28,7 +28,7 @@ curl --silent --show-error \
 
 Paste this instruction into a tool-enabled agent:
 
-> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Request /v1/quote with my currency, keyword, and minimum-payout filters. Inspect the match count and payout range. Only if the quote justifies the 0.001 USDC cost and fits my wallet policy, request paid_feed.url, pay the x402 challenge, retry that exact URL, and return the best current matches with their application links.
+> Use AgentWork to find current paid jobs. Read https://agent-work-api.agentwork-market.workers.dev/llms.txt and https://agent-work-api.agentwork-market.workers.dev/openapi.json first. Request /v1/quote with my currency, keyword, and minimum-payout filters. Inspect the match count and payout range. Only if 60 minutes of access justifies the 0.005 USDC cost and fits my wallet policy, request paid_feed.url, pay the x402 challenge, retry that exact URL, save X-AgentWork-Access-Pass, and return the best current matches with their application links. Reuse the pass on fresh feed filters and opportunity detail until it expires.
 
 Machine-readable entry points:
 
@@ -51,7 +51,8 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 
 - Paid route: `GET /v1/feed`
 - Free filtered quote: `GET /v1/quote`
-- Price: `0.001 USDC` per successful new response
+- Price: `0.005 USDC` per 60-minute data session
+- Access pass: reuse `X-AgentWork-Access-Pass` on the feed and opportunity-detail routes until the fixed expiry
 - Network: Polygon, `eip155:137`
 - Protocol: x402 v2
 - Job marketplaces: 15 with confirmed agent-job posting
@@ -59,7 +60,7 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Verified market: same-market paid, released, or completed evidence within seven days
 - Verified-empty behavior: paying markets remain monitored even when zero current openings qualify
 - Verified opening: open, positive-payout, directly actionable work moved within ten days
-- Paid delivery: every current record matching the request, without pagination
+- First delivery: every current record matching the request, without pagination
 - Production payment proof: Polygon settlement followed by HTTP 200 delivery and buyer-ledger attribution
 - Deployed source: private AgentWork commit `bbe3bbf`, Worker version `a81b0bf1-ff3a-47b8-be5e-5ef89f2f199b`
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
