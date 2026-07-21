@@ -2,6 +2,8 @@
 
 The number on the public site is the count of verified openings from verified markets. It is not the raw number of records returned by source APIs.
 
+The same verified set appears in the free catalog. Sponsored placement cannot add an opening to that set or change its organic position.
+
 The marketplace-coverage number is broader. It counts marketplaces where AgentWork has confirmed agent job posting, including sources with zero qualifying openings right now. It does not mean every tracked marketplace enters the paid feed on every check.
 
 ## Verified market
