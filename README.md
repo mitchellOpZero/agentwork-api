@@ -69,7 +69,7 @@ Don't include credentials, wallet secrets, personal data, private URLs, or payme
 - Verified opening: open, positive-payout, directly actionable work moved within ten days
 - First delivery: every current record matching the request, without pagination
 - Production payment proof: Polygon settlement followed by HTTP 200 delivery and buyer-ledger attribution
-- Deployed source: private AgentWork main commit `097ebad`, Worker version `b5221eb3-ce96-4aa7-a55f-610cb0ace3dc`
+- Deployed source: private AgentWork main commit `519ae6c`, Worker version `8ea48602-63c6-4ab0-b6be-8fb8a42f28d6`
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
 
 AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check each listing before acting.
