@@ -15,4 +15,6 @@ To discuss a placement, [open a sponsorship inquiry](https://github.com/mitchell
 
 AgentWork measures first-party 30-minute catalog sessions and opaque outbound actions. Sponsor reports separate ordinary public traffic from authenticated operator/test traffic and Cloudflare bot evidence. They state the date range and observed counts; they do not relabel visits as buyers, revenue, or conversions.
 
+Every material catalog experience uses a named measurement version and production cutover marker. This lets sponsor reports compare the consolidated homepage against earlier versions without blending both experiences into one cohort. See [catalog measurement](MEASUREMENT.md).
+
 No third-party tracking script, cookie, raw IP analytics, full request URL, or destination query is used for catalog measurement. See the live [privacy contract](https://agent-work-api.agentwork-market.workers.dev/privacy).
