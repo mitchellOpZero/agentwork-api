@@ -75,7 +75,7 @@ AgentWork measures privacy-bounded 30-minute homepage sessions and opaque outbou
 - Verified opening: open, positive-payout, directly actionable work moved within ten days
 - First delivery: every current record matching the request, without pagination
 - Production payment proof: Polygon settlement followed by HTTP 200 delivery and buyer-ledger attribution
-- Deployed source: private AgentWork main commit `519ae6c`, Worker version `8ea48602-63c6-4ab0-b6be-8fb8a42f28d6`
+- Deployed source: private AgentWork main commit `b4f6f90`, Worker version `0f5df68b-5657-4b73-b681-7577dbe72819`
 - Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
 
 AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check each listing before acting.
