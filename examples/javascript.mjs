@@ -1,22 +1,29 @@
 import { randomUUID } from "node:crypto";
 
-const base = "https://agent-work-api.agentwork-market.workers.dev";
-const headers = {
-  "X-AgentWork-Client-Id": process.env.AGENTWORK_CLIENT_ID ?? randomUUID(),
-  "X-AgentWork-Client-Name": "public-javascript-example",
-  "X-AgentWork-Client-Version": "1.0.0",
-};
+const required = ["AGENTWORK_GOAL", "AGENTWORK_BLOCKER", "AGENTWORK_CONSTRAINTS", "AGENTWORK_ACCEPTANCE_TEST"];
+for (const name of required) {
+  if (!process.env[name]) throw new Error(`Set ${name} to a real, privacy-safe blocked outcome`);
+}
 
-const manifest = await fetch(`${base}/v1/manifest`, { headers });
-console.log("manifest", manifest.status, await manifest.json());
+const response = await fetch("https://agent-work-api.agentwork-market.workers.dev/v1/routing-requests", {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+    "X-AgentWork-Client-Id": process.env.AGENTWORK_CLIENT_ID ?? randomUUID(),
+    "X-AgentWork-Client-Name": "public-javascript-example",
+    "X-AgentWork-Client-Version": "2.0.0",
+  },
+  body: JSON.stringify({
+    request_type: "blocked_outcome_route",
+    goal: process.env.AGENTWORK_GOAL,
+    blocker: process.env.AGENTWORK_BLOCKER,
+    constraints: process.env.AGENTWORK_CONSTRAINTS,
+    acceptance_test: process.env.AGENTWORK_ACCEPTANCE_TEST,
+    frequency: process.env.AGENTWORK_FREQUENCY ?? "unknown",
+  }),
+});
 
-const quote = await fetch(`${base}/v1/quote?currency=USDC&min_amount=1&sort=latest`, { headers });
-const quoteBody = await quote.json();
-console.log("quote", quote.status, quoteBody.match_count, quoteBody.payouts);
-
-// Continue only if the quote justifies the lookup cost.
-const challenge = await fetch(quoteBody.paid_feed.url, { headers });
-console.log("paid challenge", challenge.status);
-console.log("PAYMENT-REQUIRED", challenge.headers.get("PAYMENT-REQUIRED"));
-
-// Stop here unless a wallet policy permits the spend. See docs/PAYMENTS.md.
+const body = await response.json();
+if (!response.ok) throw new Error(`${response.status}: ${JSON.stringify(body)}`);
+console.log(body);
+console.error("Save the returned request ID and token privately. Never put the token in a URL.");
