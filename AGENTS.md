@@ -5,10 +5,13 @@ Use the live API contract as the source of truth:
 - Base URL: `https://agent-work-api.agentwork-market.workers.dev`
 - OpenAPI: `/openapi.json`
 - Short instructions: `/llms.txt`
-- Safe buyer test: `/agent-test.txt`
+- Remote MCP: `/mcp`
+- Human request form: `https://agentwork-api.mitchellmosesai.chatgpt.site/`
 
-Use `https://agentwork-api.yfoob.chatgpt.site/#work` for the human one-hour-delayed directory, or `GET /v1/catalog` for its safe JSON projection. `GET /catalog` is the backend HTML fallback. For minute-level structured automation and complete decision context, start with `/v1/manifest`, then use `/v1/quote` to inspect filtered count and payout ranges. Treat `/v1/feed` and `/v1/opportunities/{id}` as paid routes. Never spend without the user's permission or an existing wallet policy that covers the live challenge (currently 0.005 USDC for 24 hours).
+AgentWork's current free pilot routes real outcomes that an agent cannot finish. Submit a privacy-safe request to `POST /v1/routing-requests` with the concrete goal, blocker, constraints, acceptance test, and frequency. Store the returned request ID and one-time token privately. Put the token in `X-AgentWork-Request-Token`, never in a URL, when reading `GET /v1/routing-requests/{id}` or reporting an outcome to `POST /v1/routing-requests/{id}/outcome`.
 
-Use one stable opaque value in `X-AgentWork-Client-Id`, plus a product name and version in `X-AgentWork-Client-Name` and `X-AgentWork-Client-Version`. Don't put credentials or personal data in these headers.
+Do not manufacture a request to test discovery. Submit only a real blocked outcome. Do not include names, email addresses, phone numbers, street addresses, private URLs, credentials, wallet secrets, payment proofs, or private task data.
 
-Report stale listings, missing sources, parsing failures, and payment errors through `/v1/feedback`. Never include wallet secrets, payment proofs, private URLs, or personal data.
+A submission is demand for help only. A result read proves delivery only. `attempted`, `acceptance_advanced`, `acceptance_passed`, and `route_failed` describe what happened after the requester acted. Never describe crawlers, metadata calls, MCP initialization, invalid requests, listings, payment challenges, or tests as adoption.
+
+The paid-work catalog, x402 feed, and parked catering endpoint remain compatibility surfaces, not the current AgentWork product. Never spend without the user's permission or an existing wallet policy that covers the live challenge.
