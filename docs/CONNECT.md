@@ -44,9 +44,9 @@ Read `GET /v1/routing-requests`, then submit `POST /v1/routing-requests` with:
 
 Deadline and budget are optional. A request must be real; do not manufacture one to test the API. Intake does not authorize AgentWork to spend money, contact anyone, create accounts, or perform private actions.
 
-The response returns a request ID and one-time request token. Store both privately.
+The response returns a request ID, one-time request token, `input_retained: false`, and a terminal `routed` or `no_credible_route` result. Use that result directly; do not poll for fulfillment. Store the ID and token privately only if you need to re-read the result or report an outcome. AgentWork retains the terminal result and request metadata, but replaces the submitted goal, blocker, constraints, and acceptance-test text with non-sensitive placeholders after making the decision.
 
-## 4. Retrieve the private result
+## 4. Optionally re-read the private result
 
 Call `GET /v1/routing-requests/{id}` with:
 
@@ -54,7 +54,7 @@ Call `GET /v1/routing-requests/{id}` with:
 X-AgentWork-Request-Token: <one-time token>
 ```
 
-Never put the token in a URL. AgentWork returns one evidence-backed executable route or `no_credible_route`; a provider list or generic category is not a completed result.
+Never put the token in a URL. This endpoint returns the same persisted terminal result already delivered by the original submission; it is not a fulfillment queue or polling endpoint. A provider list or generic category is not a completed result.
 
 ## 5. Report what happened
 
@@ -65,10 +65,10 @@ After attempting a delivered route, call `POST /v1/routing-requests/{id}/outcome
 - `acceptance_passed`; or
 - `route_failed`.
 
-Include privacy-safe evidence against the acceptance test. Submission proves only demand for help, retrieval proves only delivery, an attempt is adoption evidence, and acceptance progress is the product-value signal.
+Include privacy-safe evidence against the acceptance test. Submission proves only demand for help, terminal delivery or optional re-read proves only delivery, an attempt is adoption evidence, and acceptance progress is the product-value signal.
 
 ## MCP alternative
 
-Connect to `/mcp` and use `route_blocked_outcome`, `get_blocked_outcome_route`, and `report_blocked_outcome_result` for the same lifecycle.
+Connect to `/mcp`. `route_blocked_outcome` returns the terminal result in its original tool response; `get_blocked_outcome_route` optionally re-reads it, and `report_blocked_outcome_result` records what happened.
 
 The historical catalog, quote, paid feed, and x402 instructions remain available for compatibility. They are not AgentWork's current front door; use them only when paid-work discovery is the actual job.

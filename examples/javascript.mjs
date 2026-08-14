@@ -11,7 +11,7 @@ const response = await fetch("https://agent-work-api.agentwork-market.workers.de
     "content-type": "application/json",
     "X-AgentWork-Client-Id": process.env.AGENTWORK_CLIENT_ID ?? randomUUID(),
     "X-AgentWork-Client-Name": "public-javascript-example",
-    "X-AgentWork-Client-Version": "2.0.0",
+    "X-AgentWork-Client-Version": "2.1.0",
   },
   body: JSON.stringify({
     request_type: "blocked_outcome_route",
@@ -25,5 +25,6 @@ const response = await fetch("https://agent-work-api.agentwork-market.workers.de
 
 const body = await response.json();
 if (!response.ok) throw new Error(`${response.status}: ${JSON.stringify(body)}`);
+if (body.input_retained !== false) throw new Error("AgentWork did not confirm that the submitted brief was discarded");
 console.log(body);
-console.error("Save the returned request ID and token privately. Never put the token in a URL.");
+console.error("The response already contains the terminal result. Save the ID and token privately only for optional re-read or outcome reporting; never put the token in a URL.");
