@@ -22,8 +22,8 @@ jq -n \
       --header 'content-type: application/json' \
       --header "X-AgentWork-Client-Id: ${client_id}" \
       --header 'X-AgentWork-Client-Name: public-curl-example' \
-      --header 'X-AgentWork-Client-Version: 2.0.0' \
+      --header 'X-AgentWork-Client-Version: 2.1.0' \
       --data-binary @- \
       "${api_base}/v1/routing-requests"
 
-printf '\nSave the returned request ID and token privately. Never put the token in a URL.\n'
+printf '\nThe response already contains the terminal result. Save the ID and token privately only for optional re-read or outcome reporting; never put the token in a URL.\n'
