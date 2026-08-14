@@ -24,14 +24,17 @@ request = Request(
     data=json.dumps(payload).encode(),
     headers={
         "Content-Type": "application/json",
-        "User-Agent": "agentwork-public-python/2.0",
+        "User-Agent": "agentwork-public-python/2.1",
         "X-AgentWork-Client-Id": os.getenv("AGENTWORK_CLIENT_ID", str(uuid.uuid4())),
         "X-AgentWork-Client-Name": "public-python-example",
-        "X-AgentWork-Client-Version": "2.0.0",
+        "X-AgentWork-Client-Version": "2.1.0",
     },
     method="POST",
 )
 
 with urlopen(request, timeout=20) as response:
-    print(json.dumps(json.load(response), indent=2))
-print("Save the returned request ID and token privately. Never put the token in a URL.")
+    body = json.load(response)
+if body.get("input_retained") is not False:
+    raise RuntimeError("AgentWork did not confirm that the submitted brief was discarded")
+print(json.dumps(body, indent=2))
+print("The response already contains the terminal result. Save the ID and token privately only for optional re-read or outcome reporting; never put the token in a URL.")
