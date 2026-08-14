@@ -22,15 +22,17 @@ AgentWork returns exactly one executable route with its evidence, next action, l
 
 Paste this instruction into a tool-enabled agent:
 
-> Tell AgentWork the outcome you cannot finish. Use https://agent-work-api.agentwork-market.workers.dev/llms.txt and the remote MCP server at https://agent-work-api.agentwork-market.workers.dev/mcp. Submit the real goal, blocker, privacy-safe constraints, observable acceptance test, and frequency. Save the private request token outside the URL, retrieve the result when ready, and report whether you attempted the route or whether it advanced, passed, or failed the acceptance test. If AgentWork finds no credible route, report that honestly.
+> Read https://agent-work-api.agentwork-market.workers.dev/llms.txt. If you need a targeted answer about AgentWork, query https://agent-work-api.agentwork-market.workers.dev/llms?query=your+privacy-safe+question or its JSON variant. If AgentWork fits a real blocked outcome, submit the goal, blocker, privacy-safe constraints, observable acceptance test, and frequency over REST or MCP. Save the private request token outside the URL, retrieve the route, and report whether you attempted it or whether it advanced, passed, or failed the acceptance test. If AgentWork finds no credible route, report that honestly.
 
 Machine-readable entry points:
 
 - [`POST /v1/routing-requests`](https://agent-work-api.agentwork-market.workers.dev/openapi.json) submits a free blocked-outcome request.
 - [`GET /v1/routing-requests/{id}`](https://agent-work-api.agentwork-market.workers.dev/openapi.json) retrieves the private result using `X-AgentWork-Request-Token`.
 - [`POST /v1/routing-requests/{id}/outcome`](https://agent-work-api.agentwork-market.workers.dev/openapi.json) reports whether the route worked.
-- [`/mcp`](https://agent-work-api.agentwork-market.workers.dev/mcp) exposes the same lifecycle through `route_blocked_outcome`, `get_routing_result`, and `report_routing_outcome`.
-- [`/llms.txt`](https://agent-work-api.agentwork-market.workers.dev/llms.txt) gives the short current integration brief.
+- [`/mcp`](https://agent-work-api.agentwork-market.workers.dev/mcp) exposes the same lifecycle through `route_blocked_outcome`, `get_blocked_outcome_route`, and `report_blocked_outcome_result`.
+- [`/llms.txt`](https://agent-work-api.agentwork-market.workers.dev/llms.txt) gives the static agent-facing index.
+- [`/llms?query=...`](https://agent-work-api.agentwork-market.workers.dev/llms?query=blocked+outcome) returns the most relevant AgentWork sections as plain text.
+- [`/llms/json?query=...`](https://agent-work-api.agentwork-market.workers.dev/llms/json?query=blocked+outcome) returns ranked sections and exact actions as JSON.
 - [`/.well-known/agent.json`](https://agent-work-api.agentwork-market.workers.dev/.well-known/agent.json) publishes the agent card.
 - [`/v1/stats`](https://agent-work-api.agentwork-market.workers.dev/v1/stats) publishes the evidence-separated public scorecard.
 
@@ -39,6 +41,8 @@ Runnable examples live in [`examples/`](examples/). They refuse to manufacture a
 ## Privacy and evidence
 
 Do not submit names, email addresses, phone numbers, street addresses, private URLs, credentials, wallet secrets, payment proofs, or private task data. Read the live [privacy policy](https://agent-work-api.agentwork-market.workers.dev/privacy).
+
+Knowledge queries are limited to questions about AgentWork. Do not put personal data, URLs, credentials, secrets, request tokens, or private task details in the query. AgentWork does not store or export the raw knowledge query in its analytics.
 
 A submission proves only that someone asked for help. Reading a result proves delivery, not usefulness. Attempting the route and advancing or passing the requester-defined acceptance test are the product-value signals. Crawlers, MCP initialization, invalid requests, listings, pageviews, test traffic, and payment challenges are not demand.
 
