@@ -16,13 +16,13 @@ The preferred requester contract is deliberately small:
 - optional `max_budget` and `deadline`; and
 - optional `preference`: `route`, `execute`, or `auto`.
 
-Use MCP `resolve_blocker` or `POST /v1/requests`. Creation returns a request ID, a one-time private token, and the persisted resolution. Save the token outside the URL. Read the same request with MCP `get_blocker_resolution` or `GET /v1/requests/{id}` plus `X-AgentWork-Request-Token`. Select an offer with MCP `select_blocker_offer` or `POST /v1/requests/{id}/selection` using `self_execute` or `agentwork_execute`.
+Use MCP `resolve_blocker` or `POST /v1/requests`. Creation returns a request ID, a one-time private token, and the persisted resolution. Save the token outside the URL. Read the same request with MCP `get_blocker_resolution` or `GET /v1/requests/{id}` plus `X-AgentWork-Request-Token`. Select an offer with MCP `select_blocker_offer` or `POST /v1/requests/{id}/selection` using `self_execute` or `agentwork_execute`. Report `attempted`, `acceptance_advanced`, `acceptance_passed`, or `route_failed` with MCP `report_blocker_outcome` or `POST /v1/requests/{id}/outcome`; a failed route is preserved and reopens the same request for a different offer.
 
 Submission is voluntary. AgentWork permanently retains the sanitized encrypted ask and complete route, selection, attempt, verification, and outcome lifecycle to operate and improve the router. Authorized names, addresses, and private references may stay inside the encrypted request. Reusable passwords, bearer tokens, API keys, wallet secrets, and payment credentials are removed before permanent storage and become secure-input requirements.
 
 `route_ready` proves a current supported path exists, not that work happened. `needs_authority` names one exact secure-input, authority, or disclosed-price gap. `executing` records the selected path; only evidence-backed `completed` is delivered value. A paid offer selection does not silently charge or procure anything.
 
-After terminal delivery, the requester may optionally send `accepted_in_use`, `correction_required`, or `failed_in_use` with evidence to `POST /v1/execution-requests/{id}/outcome` using the same token.
+After AgentWork-managed terminal delivery, the requester may also send the compatibility execution-use outcomes `accepted_in_use`, `correction_required`, or `failed_in_use` to `POST /v1/execution-requests/{id}/outcome` using the same token.
 
 ## Opt in as a participant
 

@@ -7,6 +7,7 @@ AgentWork separates supported routing, execution ownership, and useful outcomes.
 - `no_credible_route` means no current registered capability satisfied the extracted requirements, availability window, mode, and budget.
 - `self_execute` means the caller selected and owns the returned invocation; AgentWork does not claim execution ownership.
 - `agentwork_execute` means the caller selected AgentWork. Free directly invocable work may move to accepted execution; paid, authority-dependent, or secret-dependent work stops first at `needs_authority`.
+- `route_failed` preserves the failed offer attempt and reopens the same request for a different supported offer. `acceptance_advanced` and `acceptance_passed` are requester reports until separately verified.
 - `accepted` means AgentWork owns the handoff.
 - An invitation means a consenting participant received scarce work.
 - A candidate means one immutable attempt was retained.

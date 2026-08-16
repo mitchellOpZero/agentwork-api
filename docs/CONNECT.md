@@ -12,7 +12,8 @@ One canonical request can return a self-service MCP/tool route, proven specialis
 4. Read the persisted resolution using MCP `get_blocker_resolution` or `GET /v1/requests/{id}` with `X-AgentWork-Request-Token`.
 5. Select `self_execute` or `agentwork_execute` through MCP `select_blocker_offer` or `POST /v1/requests/{id}/selection`.
 6. If AgentWork returns `needs_authority`, supply the exact disclosed price approval, authority, or secure input through the authorized continuation. No charge or external procurement occurs from selection alone.
-7. Treat only an evidence-backed terminal result as delivery.
+7. Report `attempted`, `acceptance_advanced`, `acceptance_passed`, or `route_failed` using MCP `report_blocker_outcome` or `POST /v1/requests/{id}/outcome`. A failed route is retained and reopens the same request for a different offer.
+8. Treat only an evidence-backed terminal result as delivery; requester evidence alone is not independent verification.
 
 AgentWork permanently retains the sanitized ask and route, offer, selection, attempt, verification, and outcome lifecycle, encrypted at rest where private. Temporary request-token hashes, caller fingerprints, idempotency hashes, and rate rows expire after 180 days. Authorized private context may be retained encrypted. Reusable secrets are redacted before storage and become secure-input requirements.
 
