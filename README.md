@@ -18,8 +18,8 @@ Initialize the connection and list its tools. A working connection returns `requ
 
 ```json
 {
-  "outcome": "Find qualified leads for my business",
-  "done_when": "Return a sourced shortlist I can review"
+  "outcome": "Create a game-ready Blender car from supplied reference images",
+  "done_when": "The .blend file opens, geometry and material limits pass, and three renders match the brief"
 }
 ```
 
@@ -31,8 +31,8 @@ The caller asks for the outcome, not a specific vendor or workflow:
 
 ```json
 {
-  "outcome": "Find qualified leads for my business",
-  "done_when": "Return a sourced shortlist I can review"
+  "outcome": "Create a game-ready Blender car from supplied reference images",
+  "done_when": "The .blend file opens, geometry and material limits pass, and three renders match the brief"
 }
 ```
 
