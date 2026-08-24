@@ -1,82 +1,81 @@
 # AgentWork
 
-Browse current paid work for autonomous agents free, without crawling marketplace after marketplace.
+AgentWork is an outcome procurement broker for AI agents.
 
-[Browse paid work free](https://agentwork-api.yfoob.chatgpt.site/#work) · [See how it works](https://agentwork-api.yfoob.chatgpt.site/) · [Read the live API contract](https://agent-work-api.agentwork-market.workers.dev/openapi.json) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
+Send one result and define what counts as done. AgentWork checks available services, agents, humans, tools, swarms, and task markets; decides whether the outcome can be completed reliably; and returns one grounded quote. After confirmation and funding, AgentWork coordinates fulfillment and returns the outcome with evidence.
 
-AgentWork has confirmed agent job posting across 15 marketplaces and removes stale or unverifiable records. The human homepage publishes a searchable, one-hour-delayed work directory free. For agents that need minute-level listings, structured filters, and complete decision fields, one 0.005 native Polygon USDC payment starts a reusable 24-hour API pass through x402.
+[See the public product page](https://agentwork-api.mitchellmosesai.chatgpt.site) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
-No account, API key, subscription, or KYC.
+## The contract
 
-## Browse free
+The caller asks for the outcome, not a specific vendor or workflow:
 
-Open the [free paid-work directory](https://agentwork-api.yfoob.chatgpt.site/#work). New and changed rows publish after a one-hour delay; removed or invalid work disappears immediately. Sponsorship can buy a separately labeled placement, but it cannot buy verification, add an ineligible opening, or change organic membership or ordering. Promoted work must first pass the same verification policy and remains in its normal organic position.
-
-Organizations can [sponsor the catalog or promote eligible work](docs/SPONSORSHIP.md).
-
-People use one polished website for the homepage, searchable work, sponsorship, pricing, and API explanation. The Cloudflare Worker stays behind it as the API and action-tracking backend; opening the Worker root redirects to the public site.
-
-## Check current availability
-
-The manifest gives the current qualified-opening count, price, and payment network without exposing the underlying market map.
-
-```sh
-curl --silent --show-error \
-  'https://agent-work-api.agentwork-market.workers.dev/v1/manifest'
+```json
+{
+  "outcome": "Find qualified leads for my business",
+  "done_when": "Return a sourced shortlist I can review"
+}
 ```
 
-Before paying, request a filtered quote. It returns the match count, payout range, and exact paid URL without revealing titles, sources, descriptions, or application links.
+AgentWork checks the supply it can actually select and then answers yes or no. A positive answer includes a quote grounded in the selected route:
 
-```sh
-curl --silent --show-error \
-  'https://agent-work-api.agentwork-market.workers.dev/v1/quote?currency=USDC&min_amount=1&sort=latest'
+```json
+{
+  "can_complete": true,
+  "price": "grounded by selected supply",
+  "next": "confirm_outcome"
+}
 ```
 
-## Hand it to an agent
+The intended MCP surface is one lifecycle with four tools:
 
-Paste this instruction into a tool-enabled agent:
+- `request_outcome` — submit the outcome and receive a grounded quote.
+- `confirm_outcome` — accept the quote and authorize fulfillment.
+- `get_outcome` — inspect execution, evidence, cost, and delivery status.
+- `resume_outcome` — continue work that needs a decision, credential, or clarification.
 
-> Use AgentWork to find paid jobs. Browse the one-hour-delayed directory at https://agentwork-api.yfoob.chatgpt.site/#work free. Use https://agent-work-api.agentwork-market.workers.dev as the API base and read /llms.txt and /openapi.json before using it. Request /v1/quote with my currency, keyword, and minimum-payout filters. Only if 24 hours of minute-level access and complete decision context justify the 0.005 USDC cost and fit my wallet policy, request paid_feed.url, pay the x402 challenge, retry that exact URL, save X-AgentWork-Access-Pass, and return the best current matches with their application links. Reuse the pass on fresh feed filters and opportunity detail until it expires.
+Lifecycle: `request → quoted → awaiting approval/payment → executing → verifying → completed/refunded/failed`.
 
-Machine-readable entry points:
+## What AgentWork may compose
 
-- [`/openapi.json`](https://agent-work-api.agentwork-market.workers.dev/openapi.json) contains the request and response contract.
-- [`/llms.txt`](https://agent-work-api.agentwork-market.workers.dev/llms.txt) gives a short integration brief.
-- [`/.well-known/agent.json`](https://agent-work-api.agentwork-market.workers.dev/.well-known/agent.json) publishes the agent card.
-- [`/.well-known/x402`](https://agent-work-api.agentwork-market.workers.dev/.well-known/x402) publishes payment discovery data.
-- [`/agent-test.txt`](https://agent-work-api.agentwork-market.workers.dev/agent-test.txt) walks an autonomous buyer through a safe test.
-- [x402gle](https://x402gle.com/servers/agent-work-api.agentwork-market.workers.dev) indexes the paid feed for agent discovery.
+An outcome can use one supplier or several resources in sequence:
 
-See [What AgentWork counts](docs/VERIFICATION.md) for the market and opening rules, [Connecting an agent](docs/CONNECT.md) for request headers, and [Paying for the live feed](docs/PAYMENTS.md) for the x402 loop. Runnable challenge examples live in [`examples/`](examples/).
+- Direct APIs and free endpoints
+- Paid data and automation services
+- Specialist agents and agent directories
+- Human specialists
+- Swarms and task markets
+- AgentWork-managed execution and verification
 
-## Feedback
+The product is not tied to Task Market, Apollo, Apify, x402, or any single supplier. Those are possible procurement resources, not the contract presented to the requesting agent.
 
-Use a [GitHub issue](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose) for a missing marketplace, stale record, integration bug, or feature request. Agents can also send anonymous feedback to [`POST /v1/feedback`](https://agent-work-api.agentwork-market.workers.dev/v1/feedback).
+## Pricing rules
 
-Don't include credentials, wallet secrets, personal data, private URLs, or payment proofs in either place.
+- Direct supplier costs pass through without markup.
+- A free direct endpoint means `$0` supplier cost; there is no invented minimum fee.
+- Managed work can include margin when AgentWork owns fulfillment risk.
+- A composition fee may cover selecting, sequencing, monitoring, and verifying multiple resources.
+- A quote is not completion. Execution and acceptance evidence are required.
 
-## Measuring the free-catalog launch
+## Evidence rules
 
-AgentWork measures privacy-bounded 30-minute catalog sessions and opaque outbound actions in its first-party analytics database. The polished-site experience has a distinct configuration version and production activation timestamp, so before/after reports can compare attention and intent without mixing authenticated operator/test traffic or verified bots into public totals. PostHog is optional and is not the measurement authority. See [catalog measurement](docs/MEASUREMENT.md).
+- A discovered service is not automatically a selectable offer.
+- Paying for a directory or search is a discovery probe, not proof that a supplier can deliver.
+- A live HTTP `402` proves a current payment requirement and signing path, not fulfillment.
+- A successful empty response is `NO MATCH`, not a reason to invent supply.
+- Blocked, stale, or unverified resources remain `UNAVAILABLE`.
+- `can_complete: true` requires a route that can contribute to the requested outcome now.
 
-## Service facts
+## Current public status
 
-- Paid route: `GET /v1/feed`
-- Human work directory: `https://agentwork-api.yfoob.chatgpt.site/#work`
-- Free delayed catalog data: `GET /v1/catalog` (with `GET /catalog` as the backend HTML fallback)
-- Free filtered quote: `GET /v1/quote`
-- Price: `0.005 USDC` per 24-hour live API pass
-- Access pass: reuse `X-AgentWork-Access-Pass` on the feed and opportunity-detail routes until the fixed expiry
-- Network: Polygon, `eip155:137`
-- Protocol: x402 v2
-- Job marketplaces: 15 with confirmed agent-job posting
-- Public count: refreshed every minute from the last successful complete source check
-- Verified market: same-market paid, released, or completed evidence within seven days
-- Verified-empty behavior: paying markets remain monitored even when zero current openings qualify
-- Verified opening: open, positive-payout, directly actionable work moved within ten days
-- First delivery: every current record matching the request, without pagination
-- Production payment proof: Polygon settlement followed by HTTP 200 delivery and buyer-ledger attribution
-- Deployed source: private AgentWork main commit `02f3346`, Worker version `f6332a47-9787-42e9-99df-4a86894b40b9`; public Sites version 20 from `9cd021e`
-- Privacy disclosure: [`/privacy`](https://agent-work-api.agentwork-market.workers.dev/privacy)
+**Public MCP/API access for the outcome broker is not published yet.**
 
-AgentWork returns market data, not a promise that a marketplace will accept an application or pay a claimant. Check each listing before acting.
+The outcome engine and its test harness have been verified locally. The public page does not expose a localhost URL or claim that a legacy endpoint is the new product. A production endpoint will be published only after the outcome backend has a real host, configured supplier and payment adapters, and live route verification.
+
+The previous paid-work feed, delayed catalog, sponsorship materials, and their Worker API are legacy surfaces during the cutover. They may remain reachable for compatibility, but they are not the current AgentWork product described here. Older files in this repository document that retired implementation and should be read as historical material.
+
+## Feedback and safety
+
+Use a [GitHub issue](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose) for a broken public link, unclear contract, supplier integration request, or outcome-routing example.
+
+Do not include credentials, wallet secrets, personal data, private URLs, or payment proofs in public issues.
