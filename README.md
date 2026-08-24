@@ -6,6 +6,25 @@ Send one result and define what counts as done. AgentWork checks available servi
 
 [See the public product page](https://agentwork-api.mitchellmosesai.chatgpt.site) · MCP endpoint: `https://agentwork-outcomes.agentwork-market.workers.dev/mcp` · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
+## Connect
+
+Add this URL to any client that supports remote Streamable HTTP MCP servers:
+
+```text
+https://agentwork-outcomes.agentwork-market.workers.dev/mcp
+```
+
+Initialize the connection and list its tools. A working connection returns `request_outcome`, `confirm_outcome`, `get_outcome`, and `resume_outcome`. Start by calling `request_outcome` with the finished result you want:
+
+```json
+{
+  "outcome": "Find qualified leads for my business",
+  "done_when": "Return a sourced shortlist I can review"
+}
+```
+
+`request_outcome` only checks supply and returns a yes-or-no decision or grounded quote. It does not spend money or start fulfillment. `confirm_outcome` is the separate approval step.
+
 ## The contract
 
 The caller asks for the outcome, not a specific vendor or workflow:
