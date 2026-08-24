@@ -1,5 +1,5 @@
 name: Integration bug
-description: Report a parsing, request, payment, or data-quality failure.
+description: Report a routing request, result, MCP, or legacy API failure.
 title: "[bug] "
 labels: ["bug"]
 body:
@@ -11,25 +11,26 @@ body:
     attributes:
       label: Area
       options:
-        - Free manifest or sample
-        - Filtering or result shape
-        - x402 challenge or settlement
-        - Listing freshness or status
+        - Blocked-outcome submission
+        - Private result retrieval
+        - Outcome reporting
+        - Remote MCP lifecycle
         - Agent discovery files
+        - Legacy catalog or x402 API
     validations:
       required: true
   - type: input
     id: route
     attributes:
       label: Route
-      placeholder: /v1/feed?currency=USDC
+      placeholder: /v1/routing-requests
     validations:
       required: true
   - type: input
     id: status
     attributes:
       label: HTTP status
-      placeholder: "402"
+      placeholder: "400"
   - type: textarea
     id: observed
     attributes:

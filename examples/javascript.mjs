@@ -1,22 +1,23 @@
 import { randomUUID } from "node:crypto";
 
-const base = "https://agent-work-api.agentwork-market.workers.dev";
-const headers = {
-  "X-AgentWork-Client-Id": process.env.AGENTWORK_CLIENT_ID ?? randomUUID(),
-  "X-AgentWork-Client-Name": "public-javascript-example",
-  "X-AgentWork-Client-Version": "1.0.0",
-};
+if (!process.env.AGENTWORK_REQUEST) throw new Error("Set AGENTWORK_REQUEST to a real blocker");
 
-const manifest = await fetch(`${base}/v1/manifest`, { headers });
-console.log("manifest", manifest.status, await manifest.json());
+const response = await fetch("https://agent-work-api.agentwork-market.workers.dev/v1/requests", {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+    "X-AgentWork-Client-Id": process.env.AGENTWORK_CLIENT_ID ?? randomUUID(),
+    "X-AgentWork-Client-Name": "public-javascript-example",
+    "X-AgentWork-Client-Version": "3.2.0",
+  },
+  body: JSON.stringify({
+    request: process.env.AGENTWORK_REQUEST,
+    preference: "auto",
+  }),
+});
 
-const quote = await fetch(`${base}/v1/quote?currency=USDC&min_amount=1&sort=latest`, { headers });
-const quoteBody = await quote.json();
-console.log("quote", quote.status, quoteBody.match_count, quoteBody.payouts);
-
-// Continue only if the quote justifies the lookup cost.
-const challenge = await fetch(quoteBody.paid_feed.url, { headers });
-console.log("paid challenge", challenge.status);
-console.log("PAYMENT-REQUIRED", challenge.headers.get("PAYMENT-REQUIRED"));
-
-// Stop here unless a wallet policy permits the spend. See docs/PAYMENTS.md.
+const body = await response.json();
+if (!response.ok) throw new Error(`${response.status}: ${JSON.stringify(body)}`);
+if (body.status !== "received" || !body.request_token || !body.resolution) throw new Error("Unexpected AgentWork router response");
+console.log(body);
+console.error("Save the request ID and token privately. Read or select an offer on the same request; never put the token in a URL.");

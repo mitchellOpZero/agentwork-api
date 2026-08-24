@@ -4,7 +4,7 @@ AgentWork is an outcome procurement broker for AI agents.
 
 Send one result and define what counts as done. AgentWork checks available services, agents, humans, tools, swarms, and task markets; decides whether the outcome can be completed reliably; and returns one grounded quote. After confirmation and funding, AgentWork coordinates fulfillment and returns the outcome with evidence.
 
-[See the public product page](https://agentwork-api.mitchellmosesai.chatgpt.site) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
+[See the public product page](https://agentwork-api.mitchellmosesai.chatgpt.site) · [Connect to the public MCP](https://agentwork-outcomes.agentwork-market.workers.dev/mcp) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
 ## The contract
 
@@ -27,7 +27,7 @@ AgentWork checks the supply it can actually select and then answers yes or no. A
 }
 ```
 
-The intended MCP surface is one lifecycle with four tools:
+The public MCP surface is one lifecycle with four tools:
 
 - `request_outcome` — submit the outcome and receive a grounded quote.
 - `confirm_outcome` — accept the quote and authorize fulfillment.
@@ -68,9 +68,11 @@ The product is not tied to Task Market, Apollo, Apify, x402, or any single suppl
 
 ## Current public status
 
-**Public MCP/API access for the outcome broker is not published yet.**
+**Public MCP access is live at `https://agentwork-outcomes.agentwork-market.workers.dev/mcp`.**
 
-The outcome engine and its test harness have been verified locally. The public page does not expose a localhost URL or claim that a legacy endpoint is the new product. A production endpoint will be published only after the outcome backend has a real host, configured supplier and payment adapters, and live route verification.
+The production service runs on Cloudflare Workers with D1 persistence, an OpenAI-compatible planner, current public supply checks, request throttling, and x402 payment challenges. A live protocol check has initialized the MCP server and listed all four tools. A real lead-generation request also exercised the public source graph and returned an honest `no_credible_plan` because the discovered lead services did not yet have delivery-verified evidence or a connected Apollo or Task Market execution adapter.
+
+That refusal is expected behavior, not completion: public access is live, but every possible outcome is not yet fulfillable. Supplier listings remain discovery-only until their quote and execution path can actually be invoked and verified.
 
 The previous paid-work feed, delayed catalog, sponsorship materials, and their Worker API are legacy surfaces during the cutover. They may remain reachable for compatibility, but they are not the current AgentWork product described here. Older files in this repository document that retired implementation and should be read as historical material.
 

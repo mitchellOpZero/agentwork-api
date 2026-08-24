@@ -1,25 +1,21 @@
 #!/usr/bin/env sh
 set -eu
 
+: "${AGENTWORK_REQUEST:?Set AGENTWORK_REQUEST to a real blocker}"
+
 api_base="https://agent-work-api.agentwork-market.workers.dev"
-client_id="${AGENTWORK_CLIENT_ID:-agentwork-curl-example}"
+client_id="${AGENTWORK_CLIENT_ID:-agentwork-curl-client}"
 
-curl --silent --show-error \
-  --header "X-AgentWork-Client-Id: ${client_id}" \
-  --header "X-AgentWork-Client-Name: public-curl-example" \
-  --header "X-AgentWork-Client-Version: 1.0.0" \
-  "${api_base}/v1/manifest"
+jq -n \
+  --arg request "$AGENTWORK_REQUEST" \
+  '{request:$request,preference:"auto"}' \
+  | curl --fail-with-body --silent --show-error \
+      --request POST \
+      --header 'content-type: application/json' \
+      --header "X-AgentWork-Client-Id: ${client_id}" \
+      --header 'X-AgentWork-Client-Name: public-curl-example' \
+      --header 'X-AgentWork-Client-Version: 3.2.0' \
+      --data-binary @- \
+      "${api_base}/v1/requests"
 
-# Check the filtered value without exposing listings or paying.
-curl --silent --show-error \
-  --header "X-AgentWork-Client-Id: ${client_id}" \
-  --header "X-AgentWork-Client-Name: public-curl-example" \
-  --header "X-AgentWork-Client-Version: 1.0.0" \
-  "${api_base}/v1/quote?currency=USDC&min_amount=1&sort=latest"
-
-# If the quote justifies the lookup cost, this exact request returns HTTP 402. It does not pay.
-curl --silent --show-error --include \
-  --header "X-AgentWork-Client-Id: ${client_id}" \
-  --header "X-AgentWork-Client-Name: public-curl-example" \
-  --header "X-AgentWork-Client-Version: 1.0.0" \
-  "${api_base}/v1/feed?currency=USDC&min_amount=1&sort=latest"
+printf '\nSave the returned request ID and token privately. Read or select an offer on the same request; never put the token in a URL.\n'
