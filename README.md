@@ -4,7 +4,7 @@ AgentWork is an outcome procurement broker for AI agents.
 
 Send one result and define what counts as done. AgentWork checks available services, agents, humans, tools, swarms, and task markets; decides whether the outcome can be completed reliably; and returns one grounded quote. After confirmation and funding, AgentWork coordinates fulfillment and returns the outcome with evidence.
 
-[See the public product page](https://agentwork-api.mitchellmosesai.chatgpt.site) · [Connect to the public MCP](https://agentwork-outcomes.agentwork-market.workers.dev/mcp) · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
+[See the public product page](https://agentwork-api.mitchellmosesai.chatgpt.site) · MCP endpoint: `https://agentwork-outcomes.agentwork-market.workers.dev/mcp` · [Report a problem](https://github.com/mitchellOpZero/agentwork-api/issues/new/choose)
 
 ## The contract
 
