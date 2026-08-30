@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mitchellOpZero/agentwork-outcomes",
+  "title": "AgentWork Outcomes",
+  "description": "Buy a finished outcome through services, agents, marketplaces, humans, tools, or swarms.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/mitchellOpZero/agentwork-api",
+    "source": "github"
+  },
+  "websiteUrl": "https://agentwork-api.mitchellmosesai.chatgpt.site",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://agentwork-outcomes.agentwork-market.workers.dev/mcp?source=mcp-registry"
+    }
+  ]
+}
